@@ -40,5 +40,16 @@ add_library(vortexje SHARED ${SRCS}
     $<TARGET_OBJECTS:airfoils>
     $<TARGET_OBJECTS:rply>)
 
+	
+pybind11_add_module(pyvortexje bindings/pybind.cpp ${SRCS}
+	$<TARGET_OBJECTS:boundary-layers>
+	$<TARGET_OBJECTS:empirical-wakes>
+	$<TARGET_OBJECTS:surface-loaders>
+	$<TARGET_OBJECTS:surface-writers>
+	$<TARGET_OBJECTS:field-writers>
+	$<TARGET_OBJECTS:shape-generators>
+	$<TARGET_OBJECTS:airfoils>
+	$<TARGET_OBJECTS:rply> ${HDRS})
+
 install (TARGETS vortexje DESTINATION lib)
 install (FILES ${HDRS} DESTINATION include/vortexje)

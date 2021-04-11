@@ -11,7 +11,26 @@ set_cxx_norm(CXX_NORM_CXX11)
 
 # Use Eigen3.
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-find_package(Eigen3 3.2.2 REQUIRED)
+
+
+if(EXISTS ${PROJECT_SOURCE_DIR}/lib/pybind11)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pybind11)
+else()
+    find_package(pybind11 REQUIRED)
+endif()
+set(PYBIND11_CPP_STANDARD -std=c++14)
+
+
+message(${PROJECT_SOURCE_DIR})
+if(EXISTS ${PROJECT_SOURCE_DIR}/lib/eigen)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/lib/eigen)
+    include_directories(${PROJECT_SOURCE_DIR}/lib/eigen)
+else()
+    find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+endif()
+
+set(ENV{LANG} en)
 
 # Base compiler flags
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -30,7 +49,6 @@ if(OPENMP_FOUND)
 endif()
 
 # Include directories.
-include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(.)
 
 # Enable testing.
